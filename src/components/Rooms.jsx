@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Rooms = () => {
   const [activeRoom, setActiveRoom] = useState(null);
@@ -227,9 +228,11 @@ const Rooms = () => {
 
                 {/* Buttons fixed at bottom */}
                 <div className="mt-6 flex gap-4">
-                  <button className="flex-1 bg-primary text-white py-3  hover:bg-opacity-90 transition duration-300 transform hover:scale-105">
-                    Book Now
-                  </button>
+                  <Link to="/book">
+                    <button className="flex-1 bg-primary text-white py-3  hover:bg-opacity-90 transition duration-300 transform hover:scale-105">
+                      Book Now
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>

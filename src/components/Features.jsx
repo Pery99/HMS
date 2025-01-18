@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const Features = () => {
   const features = [
@@ -10,8 +10,8 @@ const Features = () => {
         "Temperature controlled water",
         "Poolside service",
         "Private cabanas",
-        "Children's pool area"
-      ]
+        "Children's pool area",
+      ],
     },
     {
       image: "/hotel-images/dining.jpg",
@@ -21,8 +21,8 @@ const Features = () => {
         "International cuisine",
         "24/7 room service",
         "Award-winning chefs",
-        "Wine cellar"
-      ]
+        "Wine cellar",
+      ],
     },
     {
       image: "/hotel-images/spa.jpg",
@@ -32,8 +32,8 @@ const Features = () => {
         "Massage therapy",
         "Facial treatments",
         "Steam room & sauna",
-        "Yoga classes"
-      ]
+        "Yoga classes",
+      ],
     },
     {
       image: "/hotel-images/gym.jpg",
@@ -43,10 +43,10 @@ const Features = () => {
         "Personal trainers",
         "Modern equipment",
         "24/7 access",
-        "Fitness classes"
-      ]
-    }
-  ]
+        "Fitness classes",
+      ],
+    },
+  ];
 
   return (
     <section id="amenities" className="py-20 bg-accent">
@@ -56,19 +56,20 @@ const Features = () => {
             World-Class Amenities
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Experience luxury living with our exceptional range of facilities and services.
+            Experience luxury living with our exceptional range of facilities
+            and services.
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {features.map((feature, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={feature.image} 
+                <img
+                  src={feature.image}
                   alt={feature.title}
                   className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                 />
@@ -80,13 +81,21 @@ const Features = () => {
                   <p className="text-gray-200">{feature.description}</p>
                 </div>
               </div>
-              
+
               <div className="p-6">
                 <ul className="space-y-3">
                   {feature.details.map((detail, idx) => (
                     <li key={idx} className="flex items-center text-gray-600">
-                      <svg className="w-5 h-5 text-primary mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd"/>
+                      <svg
+                        className="w-5 h-5 text-primary mr-3"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                       {detail}
                     </li>
@@ -98,7 +107,7 @@ const Features = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default Features
+export default Features;
