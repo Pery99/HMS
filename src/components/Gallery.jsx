@@ -1,193 +1,134 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { XMarkIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 
 const Gallery = () => {
-  const [selectedImage, setSelectedImage] = useState(null)
-  const [activeFilter, setActiveFilter] = useState("all")
-  const [filteredImages, setFilteredImages] = useState([])
-
-  const galleryImages = [
-    {
-      url: "/hotel-images/reception.jpg",
-      category: "interior",
-      title: "Grand Reception",
-      size: "tall",
-      featured: true,
-      description: "Our elegant reception welcomes you to luxury"
-    },
-    {
-      url: "/hotel-images/dining.jpg",
-      category: "dining",
-      title: "Fine Dining Restaurant",
-      size: "wide",
-      featured: true,
-      description: "Experience world-class cuisine"
-    },
-    {
-      url: "/hotel-images/room1.jpg",
-      category: "rooms",
-      title: "Deluxe Suite",
-      size: "standard",
-      featured: true,
-      description: "Ultimate comfort meets luxury"
-    },
-    {
-      url: "/hotel-images/room2.jpg",
-      category: "rooms",
-      title: "Executive Suite",
-      size: "wide",
-      description: "Perfect for business travelers"
-    },
-    {
-      url: "/hotel-images/room3.jpg",
-      category: "rooms",
-      title: "Family Suite",
-      size: "tall",
-      description: "Spacious comfort for families"
-    },
-    {
-      url: "/hotel-images/pool.jpg",
-      category: "amenities",
-      title: "Infinity Pool",
-      size: "wide",
-      featured: true,
-      description: "Swim with a breathtaking view"
-    },
-    {
-      url: "/hotel-images/gym.jpg",
-      category: "amenities",
-      title: "Fitness Center",
-      size: "standard",
-      description: "State-of-the-art equipment"
-    },
-    {
-      url: "/hotel-images/spa.jpg",
-      category: "amenities",
-      title: "Spa & Wellness",
-      size: "tall",
-      description: "Relax and rejuvenate"
-    }
-  ]
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [currentCategory, setCurrentCategory] = useState('all');
 
   const categories = [
-    { id: "all", label: "All Photos", count: galleryImages.length },
-    { id: "interior", label: "Interior", count: galleryImages.filter(img => img.category === "interior").length },
-    { id: "rooms", label: "Rooms", count: galleryImages.filter(img => img.category === "rooms").length },
-    { id: "dining", label: "Dining", count: galleryImages.filter(img => img.category === "dining").length },
-    { id: "amenities", label: "Amenities", count: galleryImages.filter(img => img.category === "amenities").length }
-  ]
+    { id: 'all', name: 'All' },
+    { id: 'rooms', name: 'Rooms' },
+    { id: 'dining', name: 'Dining' },
+    { id: 'amenities', name: 'Amenities' },
+    { id: 'spa', name: 'Spa & Wellness' },
+  ];
 
-  useEffect(() => {
-    setFilteredImages(
-      activeFilter === "all"
-        ? galleryImages
-        : galleryImages.filter(img => img.category === activeFilter)
-    )
-  }, [activeFilter])
+  const images = [
+    { id: 1, src: '/hotel-images/room1.jpg', category: 'rooms', title: 'Luxury Suite' },
+    { id: 2, src: '/hotel-images/dining.jpg', category: 'dining', title: 'Fine Dining' },
+    { id: 3, src: '/hotel-images/spa.jpg', category: 'spa', title: 'Spa Treatment' },
+    { id: 4, src: '/hotel-images/room2.jpg', category: 'rooms', title: 'Room' },
+    { id: 5, src: 'hotel-images/gym.jpg', category: 'amenities', title: 'Gym' },
+  ];
+
+  const filteredImages = currentCategory === 'all' 
+    ? images 
+    : images.filter(img => img.category === currentCategory);
 
   return (
-    <section id="gallery" className="py-20 bg-gray-50">
-      <div className="max-w-[1400px] mx-auto px-4">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="text-primary font-medium tracking-wider uppercase text-sm">Our Gallery</span>
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mt-2">
-            Captured Moments
+    <section id="gallery" className="py-16 bg-primary/5">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+            Experience Luxury
           </h2>
-          <div className="w-20 h-[2px] bg-primary mx-auto my-4"></div>
+          <p className="text-primary/70 max-w-2xl mx-auto">
+            Take a visual journey through our world-class facilities and experience the epitome of luxury.
+          </p>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {categories.map((cat) => (
+        {/* Category Filter */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {categories.map((category) => (
             <button
-              key={cat.id}
-              onClick={() => setActiveFilter(cat.id)}
-              className={`px-5 py-2 text-sm font-medium transition-all duration-300
-                ${activeFilter === cat.id
-                  ? "bg-primary text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"}
-                rounded-md
+              key={category.id}
+              onClick={() => setCurrentCategory(category.id)}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300
+                ${currentCategory === category.id
+                  ? 'bg-primary text-white'
+                  : 'bg-white text-primary/80 hover:bg-primary/10'}
               `}
             >
-              {cat.label}
+              {category.name}
             </button>
           ))}
         </div>
 
-        {/* Gallery Grid - New Layout */}
-        <div className="grid grid-cols-12 gap-4">
-          {filteredImages.map((image, index) => (
-            <div
-              key={index}
+        {/* Gallery Grid */}
+        <motion.div 
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          layout
+        >
+          {filteredImages.map((image) => (
+            <motion.div
+              key={image.id}
+              layoutId={`container-${image.id}`}
+              className="relative group cursor-pointer rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
               onClick={() => setSelectedImage(image)}
-              className={`group cursor-pointer overflow-hidden rounded-lg
-                ${image.size === 'wide' 
-                  ? 'col-span-12 md:col-span-8 aspect-[16/9]' 
-                  : image.size === 'tall'
-                  ? 'col-span-12 md:col-span-4 aspect-[3/4]'
-                  : 'col-span-12 md:col-span-4 aspect-square'}
-                ${index === 0 ? 'md:col-span-8 aspect-[16/9]' : ''}
-                transform transition-transform duration-300 hover:-translate-y-1
-              `}
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.2 }}
             >
-              <div className="relative h-full w-full">
+              <div className="aspect-w-4 aspect-h-3">
                 <img
-                  src={image.url}
+                  src={image.src}
                   alt={image.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                    <span className="inline-block px-2 py-1 bg-primary/80 text-white text-xs rounded-md mb-2">
-                      {categories.find(cat => cat.id === image.category)?.label}
-                    </span>
-                    <h3 className="text-xl text-white font-bold mb-1">{image.title}</h3>
-                    <p className="text-sm text-gray-200">{image.description}</p>
-                  </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <h3 className="text-white font-medium text-lg">{image.title}</h3>
+                  <p className="text-white/90 text-sm capitalize">{image.category}</p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="relative max-w-7xl w-full" onClick={e => e.stopPropagation()}>
-            <button 
+        {/* Lightbox */}
+        <AnimatePresence>
+          {selectedImage && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 bg-primary/95 flex items-center justify-center p-4"
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-16 right-0 text-white/90 hover:text-white transition-colors flex items-center gap-2"
             >
-              <span className="text-sm font-medium">Close Gallery</span>
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            
-            <div className="bg-black/30 rounded-lg overflow-hidden">
-              <img
-                src={selectedImage.url}
-                alt={selectedImage.title}
-                className="w-full h-auto max-h-[80vh] object-contain"
-              />
-              <div className="p-8 bg-gradient-to-t from-black/90 to-transparent">
-                <span className="inline-block px-3 py-1 bg-primary/90 text-white text-xs tracking-wider rounded-full mb-3">
-                  {categories.find(cat => cat.id === selectedImage.category)?.label}
-                </span>
-                <h3 className="text-3xl font-playfair font-bold text-white mb-3">
-                  {selectedImage.title}
-                </h3>
-                <p className="text-gray-300 max-w-2xl">
-                  {selectedImage.description}
-                </p>
+              <div className="relative max-w-5xl w-full">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  className="w-full h-auto rounded-lg"
+                />
+                <button
+                  className="absolute top-4 right-4 text-white hover:text-gray-300"
+                  onClick={() => setSelectedImage(null)}
+                >
+                  <XMarkIcon className="w-6 h-6" />
+                </button>
+                <div className="absolute bottom-4 left-4">
+                  <h3 className="text-white text-xl font-medium">{selectedImage.title}</h3>
+                  <p className="text-white/90 capitalize">{selectedImage.category}</p>
+                </div>
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                  <button className="text-white hover:text-gray-300 p-2">
+                    <ArrowLeftIcon className="w-6 h-6" />
+                  </button>
+                </div>
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
+                  <button className="text-white hover:text-gray-300 p-2">
+                    <ArrowRightIcon className="w-6 h-6" />
+                  </button>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </section>
-  )
-}
+  );
+};
 
-export default Gallery
+export default Gallery;

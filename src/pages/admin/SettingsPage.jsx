@@ -23,7 +23,7 @@ const SettingsPage = () => {
     { id: 'profile', name: 'Profile Settings', icon: UserIcon },
     { id: 'notifications', name: 'Notifications', icon: BellIcon },
     { id: 'security', name: 'Security', icon: ShieldCheckIcon },
-    { id: 'appearance', name: 'Appearance', icon: SwatchIcon },
+    // { id: 'appearance', name: 'Appearance', icon: SwatchIcon },
     { id: 'system', name: 'System', icon: CogIcon },
     { id: 'admins', name: 'Admin Management', icon: UsersIcon },
   ];

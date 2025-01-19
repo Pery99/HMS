@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/outline";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,9 +20,8 @@ const Navbar = () => {
       const scrollPosition = window.scrollY;
       setScrolled(scrollPosition > 50);
 
-      // Update active section based on scroll position
       const sections = navLinks.map((link) => link.section);
-
+      
       // Check for hero/home section first
       if (scrollPosition < window.innerHeight * 0.5) {
         setActiveSection("home");
@@ -32,7 +33,9 @@ const Navbar = () => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
-          if (rect.top <= 150 && rect.bottom >= 150) {
+          // Adjusted threshold to better detect the gallery section
+          const threshold = window.innerHeight * 0.3;
+          if (rect.top <= threshold && rect.bottom >= threshold) {
             setActiveSection(section);
           }
         }
@@ -40,139 +43,143 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-    // Initialize active section
-    handleScroll();
-
+    handleScroll(); // Initialize active section
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-sm shadow-lg py-2"
-          : "bg-transparent py-4"
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <h1
-                className={`text-2xl font-playfair font-bold transition-colors duration-300 ${
-                  scrolled ? "text-primary" : "text-white"
-                }`}
-              >
-                Logo/Name
+    <>
+      <nav className={`fixed w-full z-50 transition-all duration-500 ${
+        scrolled ? "bg-white/90 backdrop-blur-md shadow-lg" : "bg-transparent"
+      }`}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo */}
+            <Link to="/" className="flex-shrink-0">
+              <h1 className={`text-2xl font-playfair font-bold ${
+                scrolled ? "text-primary" : "text-white"
+              }`}>
+                LUXESTAY
               </h1>
-            </div>
-
-            <div className="hidden md:block ml-10">
-              <div className="flex items-baseline space-x-4">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300
-                      ${
-                        scrolled
-                          ? "text-gray-600 hover:text-primary"
-                          : "text-gray-200 hover:text-white"
-                      }
-                      ${
-                        activeSection === link.section
-                          ? (scrolled ? "text-primary" : "text-white") +
-                            " border-b-2 border-current"
-                          : ""
-                      }
-                    `}
-                  >
-                    {link.name}
-                  </a>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Link
-              to="/book"
-              className={`hidden md:block px-4 py-2 rounded-md transition-all duration-300 transform hover:scale-105
-                ${
-                  scrolled
-                    ? "bg-primary text-white hover:bg-opacity-90"
-                    : "bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm"
-                }`}
-            >
-              Book Now
             </Link>
 
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className={`md:hidden rounded-md p-2 transition-colors duration-300 ${
-                scrolled
-                  ? "text-primary hover:bg-gray-100"
-                  : "text-white hover:bg-white/10"
-              }`}
-            >
-              <span className="sr-only">Open menu</span>
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center space-x-1">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`relative px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
+                    ${scrolled 
+                      ? "text-gray-600 hover:text-primary" 
+                      : "text-white/90 hover:text-white"
+                    }
+                    ${activeSection === link.section && "nav-active"}
+                  `}
+                >
+                  {link.name}
+                  {activeSection === link.section && (
+                    <motion.div
+                      layoutId="activeSection"
+                      className={`absolute inset-0 rounded-full ${
+                        scrolled ? "bg-primary/10" : "bg-white/10"
+                      }`}
+                      transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                    />
+                  )}
+                </a>
+              ))}
+              <Link
+                to="/book"
+                className={`ml-4 px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300
+                  ${scrolled
+                    ? "bg-primary text-white hover:bg-primary/90"
+                    : "bg-white text-primary hover:bg-white/90"}
+                `}
               >
-                {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
+                Book Now
+              </Link>
+            </div>
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setIsOpen(true)}
+              className="md:hidden p-2 rounded-full hover:bg-white/10 transition-colors"
+            >
+              <Bars3Icon className={`w-6 h-6 ${scrolled ? "text-primary" : "text-white"}`} />
             </button>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={`md:hidden transition-all duration-300 ease-in-out ${
-          isOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 -translate-y-full hidden"
-        }`}
-      >
-        <div className="px-2 pt-2 pb-3 space-y-1 bg-white/95 backdrop-blur-sm shadow-lg">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              className={`block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-primary hover:bg-gray-50
-                ${
-                  activeSection === link.section
-                    ? "text-primary bg-gray-50"
-                    : ""
-                }
-              `}
+      {/* Mobile Navigation Overlay */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 md:hidden"
+          >
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setIsOpen(false)}
+            />
+
+            {/* Mobile Menu */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", damping: 30 }}
+              className="absolute right-0 top-0 bottom-0 w-full max-w-sm bg-white"
             >
-              {link.name}
-            </a>
-          ))}
-          <button className="w-full mt-2 px-3 py-2 bg-primary text-white rounded-md hover:bg-opacity-90 transition duration-300">
-            Book Now
-          </button>
-        </div>
-      </div>
-    </nav>
+              <div className="flex flex-col h-full">
+                <div className="flex items-center justify-between p-6 border-b">
+                  <h1 className="text-xl font-playfair font-bold text-primary">LUXESTAY</h1>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="p-2 rounded-full hover:bg-gray-100"
+                  >
+                    <XMarkIcon className="w-6 h-6 text-gray-600" />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto py-6 px-6">
+                  {navLinks.map((link) => (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`block py-4 text-lg font-medium border-b border-gray-100
+                        ${activeSection === link.section
+                          ? "text-primary"
+                          : "text-gray-600 hover:text-primary"
+                        }
+                      `}
+                    >
+                      {link.name}
+                    </a>
+                  ))}
+                </div>
+                <div className="p-6 border-t">
+                  <Link
+                    to="/book"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center w-full py-3 px-6 rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors"
+                  >
+                    Book Your Stay
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
 
