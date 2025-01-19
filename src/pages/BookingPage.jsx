@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // You'll need to install framer-motion
+import { motion } from "framer-motion"; 
 
 const BookingPage = () => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const BookingPage = () => {
     { number: 4, title: "Confirm Booking" },
   ];
 
-  // Add price calculation
+  
   const calculatePrice = () => {
     const prices = {
       deluxe: 299,
@@ -118,12 +118,12 @@ const BookingPage = () => {
               }
               className="hidden"
             />
-            <div className="flex-1 grid grid-cols-3 gap-4">
-              <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
+            <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative w-full h-48 md:h-full rounded-lg overflow-hidden">
                 <img
                   src={room.image}
                   alt={room.title}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                 />
               </div>
               <div className="col-span-2 flex justify-between">
@@ -172,7 +172,7 @@ const BookingPage = () => {
           onClick={() => setStep(3)}
           className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-opacity-90 transition duration-300"
         >
-          Continue to Guest Details
+          Continue
         </button>
       </div>
     </motion.div>
@@ -222,41 +222,56 @@ const BookingPage = () => {
 
         {/* Progress Steps */}
         <div className="max-w-4xl mx-auto mb-8 px-4">
-          <div className="flex justify-between">
+          {/* Desktop Steps */}
+          <div className="hidden md:flex justify-between">
             {steps.map((s, i) => (
               <div key={s.number} className="flex-1 relative">
-                <div
-                  className={`
+                <div className={`
                   flex flex-col items-center
-                  ${
-                    i !== steps.length - 1
-                      ? 'after:content-[""] after:absolute after:w-full after:h-0.5 after:bg-gray-300 after:top-5 after:left-1/2 after:-z-10'
-                      : ""
-                  }
-                `}
-                >
-                  <div
-                    className={`
+                  ${i !== steps.length - 1 
+                    ? 'after:content-[""] after:absolute after:w-full after:h-0.5 after:bg-gray-300 after:top-5 after:left-1/2 after:-z-10'
+                    : ''}
+                `}>
+                  <div className={`
                     w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
-                    ${
-                      step >= s.number
-                        ? "bg-primary text-white"
-                        : "bg-gray-200 text-gray-400"
-                    }
-                  `}
-                  >
+                    ${step >= s.number ? 'bg-primary text-white' : 'bg-gray-200 text-gray-400'}
+                  `}>
                     {s.number}
                   </div>
-                  <span
-                    className={`mt-2 text-sm font-medium ${
-                      step >= s.number ? "text-white" : "text-gray-400"
-                    }`}
-                  >
+                  <span className={`mt-2 text-sm font-medium ${
+                    step >= s.number ? 'text-white' : 'text-gray-400'
+                  }`}>
                     {s.title}
                   </span>
                 </div>
               </div>
             ))}
+          </div>
+
+          {/* Mobile Steps */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-between px-2">
+              {steps.map((s, i) => (
+                <React.Fragment key={s.number}>
+                  <div className="flex flex-col items-center">
+                    <div className={`
+                      w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium
+                      ${step >= s.number ? 'bg-primary text-white' : 'bg-gray-200 text-gray-400'}
+                    `}>
+                      {s.number}
+                    </div>
+                    <span className={`mt-1 text-[10px] font-medium text-center max-w-[60px] ${
+                      step >= s.number ? 'text-white' : 'text-gray-400'
+                    }`}>
+                      {s.title}
+                    </span>
+                  </div>
+                  {i < steps.length - 1 && (
+                    <div className="flex-1 h-[1px] bg-gray-300 mx-2 mt-3" />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
           </div>
         </div>
 
