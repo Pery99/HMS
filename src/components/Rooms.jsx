@@ -112,15 +112,16 @@ const Rooms = () => {
   };
 
   return (
-    <section id="rooms" className="py-20 bg-gray-50">
+    <section id="rooms" className="py-20 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-primary mb-4">
+          <span className="text-primary font-medium tracking-wider uppercase text-sm">Our Rooms</span>
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mt-2">
             Luxurious Accommodations
           </h2>
+          <div className="w-20 h-[2px] bg-primary mx-auto my-4"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover our carefully curated selection of premium rooms and
-            suites, designed for your ultimate comfort.
+            Discover our carefully curated selection of premium rooms and suites.
           </p>
         </div>
 
@@ -227,13 +228,13 @@ const Rooms = () => {
                 </div>
 
                 {/* Buttons fixed at bottom */}
-                <div className="mt-6 flex gap-4">
-                  <Link to="/book">
+                <Link to="/book">
+                  <div className="mt-6 flex gap-4">
                     <button className="flex-1 bg-primary text-white py-3  hover:bg-opacity-90 transition duration-300 transform hover:scale-105">
                       Book Now
                     </button>
-                  </Link>
-                </div>
+                  </div>
+                </Link>
               </div>
             </div>
           ))}

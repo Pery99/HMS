@@ -49,15 +49,16 @@ const Features = () => {
   ];
 
   return (
-    <section id="amenities" className="py-20 bg-accent">
+    <section id="amenities" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-primary mb-4">
+          <span className="text-primary font-medium tracking-wider uppercase text-sm">Our Amenities</span>
+          <h2 className="text-3xl md:text-4xl font-playfair font-bold text-gray-900 mt-2">
             World-Class Amenities
           </h2>
+          <div className="w-20 h-[2px] bg-primary mx-auto my-4"></div>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Experience luxury living with our exceptional range of facilities
-            and services.
+            Experience luxury living with our exceptional range of facilities and services.
           </p>
         </div>
 
@@ -65,7 +66,7 @@ const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="group bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
+              className="group bg-gray-50 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1"
             >
               <div className="relative h-64 overflow-hidden">
                 <img

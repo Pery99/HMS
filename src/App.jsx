@@ -7,6 +7,7 @@ import Rooms from './components/Rooms'
 import Gallery from './components/Gallery'
 import Footer from './components/Footer'
 import BookingPage from './pages/BookingPage'
+import Location from './components/Location'
 
 const HomePage = () => {
   return (
@@ -16,6 +17,7 @@ const HomePage = () => {
       <Features />
       <Rooms />
       <Gallery />
+      <Location />
       <Footer />
     </>
   )

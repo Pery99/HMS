@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -82,9 +83,11 @@ const Hero = () => {
 
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
-            <button className="w-64 sm:w-auto bg-primary text-white px-8 py-4 rounded-md hover:bg-opacity-90 transition duration-300 transform hover:scale-105 text-lg">
-              Book Your Stay
-            </button>
+            <Link to="/book">
+              <button className="w-64 sm:w-auto bg-primary text-white px-8 py-4 rounded-md hover:bg-opacity-90 transition duration-300 transform hover:scale-105 text-lg">
+                Book Your Stay
+              </button>
+            </Link>
             <button className="w-64 sm:w-auto border-2 border-white text-white px-8 py-4 rounded-md hover:bg-white hover:text-primary transition duration-300 transform hover:scale-105 text-lg">
               Explore Rooms
             </button>
